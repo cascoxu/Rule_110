@@ -1,0 +1,7 @@
+1-Have the options  to execute other rules besides the 110 rule (In progress)
+2-Enable the automata to grow infinitely (table with infinite grow until crash?)
+3-Give the option to start in the left or center. Have in account the camera position at start
+4-Have in account the delta time in the update
+5-Game of life
+6-Fractals?
+7-Random color but only from a list of preconfigured colors as random colors as it is now is ugly. (start every time with a diferent color?)
