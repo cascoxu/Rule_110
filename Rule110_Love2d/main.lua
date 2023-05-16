@@ -437,6 +437,8 @@ function initConfigScreenUIElements()
     groupOrder = groupOrder + 1
     order = order + 1
     checkBoxDrawFromTop = CheckBox:Create(windowWidth/2 + textBoxDisplacementRight + 60, windowHeight/2 - menuVerticalPos + ( order*menuTextVerticalIncrement + order*configScreenAdditionalHorizontalSpace) + (groupOrder* menuGroupVerticalIncrement) , 20, 20, black, color, color, drawFromTop)
+    order = order + 1
+    textBoxRuleNumber = TextBox:Create(windowWidth/2 + textBoxDisplacementRight, windowHeight/2 - menuVerticalPos + ( order*menuTextVerticalIncrement + order*configScreenAdditionalHorizontalSpace) + (groupOrder* menuGroupVerticalIncrement) , textBoxWidth, textBoxHeight, black, color, color, ruleNumber, validationPattern)
     
 end
 
@@ -474,6 +476,8 @@ function drawConfigScreen()
     groupOrder = groupOrder + 1
     order = order + 1
     love.graphics.print( "Generate automata from top: ", windowWidth/2 - menuHorizontalPos, windowHeight/2 - menuVerticalPos + ( order*menuTextVerticalIncrement + order*configScreenAdditionalHorizontalSpace) + (groupOrder* menuGroupVerticalIncrement), 0, 1, 1, 0, 0, 0, 0 )
+    order = order + 1
+    love.graphics.print( "Rule number (Values in the range 0-255): ", windowWidth/2 - menuHorizontalPos, windowHeight/2 - menuVerticalPos + ( order*menuTextVerticalIncrement + order*configScreenAdditionalHorizontalSpace) + (groupOrder* menuGroupVerticalIncrement), 0, 1, 1, 0, 0, 0, 0 )
   
     love.graphics.print( "Press Esc to apply changes ", windowWidth/2 - 100, windowHeight/2 + 125, 0, 1, 1, 0, 0, 0, 0 )
 
@@ -488,6 +492,7 @@ function drawUIElements()
     textBoxCellSize:Draw()
     textBoxGenerationsPerIteration:Draw()
     textBoxColor:Draw()
+    textBoxRuleNumber:Draw()
 
 print(checkBoxDrawFromTop.GetValue())
     checkBoxDrawFromTop:Draw()
@@ -501,6 +506,7 @@ function textBoxKeyPressed(key)
     textBoxCellSize:DeleteCharacter(key)
     textBoxGenerationsPerIteration:DeleteCharacter(key)
     textBoxColor:DeleteCharacter(key)
+    textBoxRuleNumber:DeleteCharacter(key)
 end
 
 function UIElementMoussePressed(x,y)
@@ -511,6 +517,7 @@ function UIElementMoussePressed(x,y)
     textBoxCellSize:Activate(x,y)
     textBoxGenerationsPerIteration:Activate(x,y)
     textBoxColor:Activate(x,y)
+    textBoxRuleNumber:Activate(x,y)
 
     checkBoxDrawFromTop:Activate(x,y)
 end
@@ -524,6 +531,17 @@ function textBoxInput(text)
         textBoxCellSize:SetText(text)
         textBoxGenerationsPerIteration:SetText(text)
         textBoxColor:SetText(text)
+        textBoxRuleNumber:SetText(text)
+
+        if textBoxRuleNumber:GetText() ~= nil and textBoxRuleNumber:GetText() ~= '' then
+            aux = tonumber(textBoxRuleNumber:GetText())
+            if aux < 0 then
+                textBoxRuleNumber:SetText("0")
+            end
+            if aux > 255 then
+                textBoxRuleNumber:SetText("255")
+            end
+        end
     end
 end
 
@@ -535,6 +553,7 @@ function UIElementDeactivate()
     textBoxCellSize:Deactivate()
     textBoxGenerationsPerIteration:Deactivate()
     textBoxColor:Deactivate()
+    textBoxRuleNumber:Deactivate()
 end
 
 function applyConfig()
@@ -568,6 +587,12 @@ function applyConfig()
     if textBoxColor:GetText() ~= nil and textBoxColor:GetText() ~= '' then
         colorValues = split(textBoxColor:GetText(), ",")
         color = { colorValues[1], colorValues[2], colorValues[3]}
+    end
+    if textBoxRuleNumber:GetText() ~= nil and textBoxRuleNumber:GetText() ~= '' then
+        aux = tonumber(textBoxRuleNumber:GetText())
+        if aux >= 1 then
+            ruleNumber = aux
+        end
     end
 
         drawFromTop = checkBoxDrawFromTop:GetValue()
@@ -703,3 +728,4 @@ function checkKeyPressed(key, scancode, isrepeat)
 
     textBoxKeyPressed(key)
 end
+

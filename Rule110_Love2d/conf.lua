@@ -54,6 +54,7 @@ function love.conf(t)
     } 
 
     drawFromTop = 1
+    ruleNumber = 110
 
     if love.filesystem.getInfo('settings.txt') == nil then
 		writeConfigFile()   
@@ -111,6 +112,7 @@ function writeConfigFile()
         f:write(minimunHeight .. "\r\n")
         f:write(color[1] .. "," .. color[2] .. "," .. color[3] .. "\r\n")
         f:write(drawFromTop .. "\r\n")
+        f:write(ruleNumber .. "\r\n")
     f:close()    
 end
 
@@ -130,8 +132,10 @@ function readConfigFile()
     colorAux = split(values[9], ",")
     color = { colorAux[1], colorAux[2], colorAux[3] }
     drawFromTop =  tonumber(values[10])
+    ruleNumber =  tonumber(values[11])
 end
 
+--Helper Methods
 function split(s, delimiter)
     result = {}
     for match in (s..delimiter):gmatch("(.-)"..delimiter) do
@@ -139,3 +143,18 @@ function split(s, delimiter)
     end
     return result
 end
+
+
+num=7
+function toBits(num)
+    -- returns a table of bits, least significant first.
+    local t={} -- will contain the bits
+    while num>0 do
+        rest=math.fmod(num,2)
+        t[#t+1]=rest
+        num=(num-rest)/2
+    end
+    return t
+end
+bits=toBits(num)
+print(table.concat(bits))
