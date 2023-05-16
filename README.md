@@ -1,2 +1,2 @@
 # Rule_110
-Rule 110 automata with many options to configure
+Rule 110 celullar automata with many configuration options. Made with Löve 2D 
